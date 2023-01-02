@@ -1,10 +1,21 @@
 import { Component } from 'react';
-import css from './contactItem.module.css';
+import css from './ContactItem.module.css';
+import PropTypes from 'prop-types';
 
-export class contactItem extends Component {
+export class ContactItem extends Component {
   render() {
-    return ({ name }) => <p className={css.contactItem}>{name}</p>;
+    return (
+      <p className={css.contact}>
+        {this.props.name}:
+        <span className={css.number}> {this.props.number}</span>
+      </p>
+    );
   }
 }
 
-export default contactItem;
+ContactItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+};
+
+export default ContactItem;

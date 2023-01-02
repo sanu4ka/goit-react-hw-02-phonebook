@@ -1,15 +1,30 @@
 import { Component } from 'react';
-import css from './contactList.module.css';
-import { contactItem } from '../contactItem/contactItem';
+import css from './ContactList.module.css';
+import { ContactListItem } from '../ContactListItem/ContactListItem';
+import PropTypes from 'prop-types';
 
-export class contactList extends Component {
+export class ContactList extends Component {
   render() {
-    return this.props.map(({ name, id }) => (
-      <li key={id} className={css.listItem}>
-        <contactItem name={name} />
-      </li>
-    ));
+    return (
+      <ul className={css.list}>
+        <ContactListItem
+          filteredContacts={this.props.filteredContacts}
+          deleteContact={this.props.deleteContact}
+        />
+      </ul>
+    );
   }
 }
 
-export default contactList;
+ContactList.propTypes = {
+  filteredContacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  deleteContact: PropTypes.func.isRequired,
+};
+
+export default ContactList;

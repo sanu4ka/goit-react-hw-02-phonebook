@@ -1,6 +1,9 @@
 import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import css from './App.module.css';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
 
 export class App extends Component {
   state = {
@@ -11,8 +14,6 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   handleSubmit = evt => {
@@ -49,46 +50,24 @@ export class App extends Component {
     this.setState({ filter: evt.target.value });
   };
 
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
   render() {
     const filteredContacts = this.getFiltredContacts();
     return (
-      <div>
+      <div className={css.mainModule}>
         <h1>Phonebook</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-          <input
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-          <button
-            className={css.submitButton}
-            type="submit"
-            onSubmit={this.handleSubmit}
-          >
-            Add contact
-          </button>
-        </form>
+        <ContactForm handleSubmit={this.handleSubmit} />
         <h2>Contacts</h2>
-        <h3>Find contacts by name</h3>
-        <input type="text" name="filter" onChange={this.handleChange} />
-        <ul>
-          {filteredContacts.map(({ name, number, id }) => (
-            <li key={id}>
-              <p>
-                {name}: {number}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <Filter handleChange={this.handleChange} />
+        <ContactList
+          filteredContacts={filteredContacts}
+          deleteContact={this.deleteContact}
+        />
       </div>
     );
   }
