@@ -17,9 +17,14 @@ export class App extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-
+    const form = evt.currentTarget;
     const contactName = evt.currentTarget.elements.name.value;
-    const newContact = { id: nanoid(), name: contactName };
+    const contactNumber = evt.currentTarget.elements.number.value;
+    const newContact = {
+      id: nanoid(),
+      name: contactName,
+      number: contactNumber,
+    };
     const { contacts } = this.state;
     if (contacts.find(contact => contact.name === contactName)) {
       return alert(`${contactName} is already in contacts.`);
@@ -27,10 +32,25 @@ export class App extends Component {
     this.setState(({ contacts }) => ({
       contacts: [...contacts, newContact],
     }));
-    // form.reset();
+    form.reset();
+  };
+
+  getFiltredContacts = () => {
+    const { contacts, filter } = this.state;
+
+    const normalizeFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
+  };
+
+  handleChange = evt => {
+    this.setState({ filter: evt.target.value });
   };
 
   render() {
+    const filteredContacts = this.getFiltredContacts();
     return (
       <div>
         <h1>Phonebook</h1>
@@ -42,6 +62,13 @@ export class App extends Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
+          <input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+          />
           <button
             className={css.submitButton}
             type="submit"
@@ -51,10 +78,14 @@ export class App extends Component {
           </button>
         </form>
         <h2>Contacts</h2>
+        <h3>Find contacts by name</h3>
+        <input type="text" name="filter" onChange={this.handleChange} />
         <ul>
-          {this.state.contacts.map(({ name, id }) => (
+          {filteredContacts.map(({ name, number, id }) => (
             <li key={id}>
-              <p>{name}</p>
+              <p>
+                {name}: {number}
+              </p>
             </li>
           ))}
         </ul>
