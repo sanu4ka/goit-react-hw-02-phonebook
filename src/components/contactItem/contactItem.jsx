@@ -1,5 +1,5 @@
 import { Component } from 'react';
-// import css from './ContactItem.module.css';
+import css from './ContactItem.module.css';
 import PropTypes from 'prop-types';
 
 export class ContactItem extends Component {
