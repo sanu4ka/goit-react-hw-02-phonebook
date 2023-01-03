@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import css from './ContactListItem.module.css';
+// import css from './ContactListItem.module.css';
 import { ContactItem } from '../ContactItem/ContactItem';
 import PropTypes from 'prop-types';
 
