@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import css from './ContactListItem.module.css';
-import { ContactItem } from '../ContactItem/ContactItem';
+import { ContactItem } from '../СontactItem/ContactItem';
 import PropTypes from 'prop-types';
 
 export class ContactListItem extends Component {
