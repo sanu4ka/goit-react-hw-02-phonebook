@@ -2,8 +2,8 @@ import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import css from './App.module.css';
 import { ContactForm } from './ContactForm/ContactForm';
-import { Filter } from './Filter/Filter';
-import { ContactList } from './СontactList/СontactList';
+import Filter from './Filter/Filter';
+import ContactList from './СontactList/СontactList';
 
 export class App extends Component {
   state = {
@@ -16,24 +16,20 @@ export class App extends Component {
     filter: '',
   };
 
-  handleSubmit = evt => {
-    evt.preventDefault();
-    const form = evt.currentTarget;
-    const contactName = evt.currentTarget.elements.name.value;
-    const contactNumber = evt.currentTarget.elements.number.value;
+  handleSubmit = (name, number) => {
     const newContact = {
       id: nanoid(),
-      name: contactName,
-      number: contactNumber,
+      name: name,
+      number: number,
     };
+
     const { contacts } = this.state;
-    if (contacts.find(contact => contact.name === contactName)) {
-      return alert(`${contactName} is already in contacts.`);
+    if (contacts.find(contact => contact.name === name)) {
+      return alert(`${name} is already in contacts.`);
     }
     this.setState(({ contacts }) => ({
       contacts: [...contacts, newContact],
     }));
-    form.reset();
   };
 
   getFiltredContacts = () => {
